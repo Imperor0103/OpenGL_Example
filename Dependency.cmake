@@ -49,3 +49,19 @@ ExternalProject_Add(
     )
 set(DEP_LIST ${DEP_LIST} dep_glfw)  # DEP_LIST는 CMakeLists.txt에서 링크된 dependency 리스트
 set(DEP_LIBS ${DEP_LIBS} glfw3) # DEP_LIST는 CMakeLists.txt에서 링크된 라이브러리 이름
+
+# glad
+ExternalProject_Add(
+    dep_glad
+    GIT_REPOSITORY "https://github.com/Dav1dde/glad"
+    GIT_TAG "v0.1.34"
+    GIT_SHALLOW 1
+    UPDATE_COMMAND ""
+    PATCH_COMMAND ""
+    CMAKE_ARGS
+        -DCMAKE_INSTALL_PREFIX=${DEP_INSTALL_DIR}
+        -DGLAD_INSTALL=ON
+    TEST_COMMAND ""
+    )
+set(DEP_LIST ${DEP_LIST} dep_glad)
+set(DEP_LIBS ${DEP_LIBS} glad)
