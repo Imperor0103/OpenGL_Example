@@ -1,6 +1,10 @@
+#include "common.h"
+#include "shader.h" 
+
 #include <spdlog/spdlog.h>
 #include <glad/glad.h> // glad 라이브러리 헤더파일
 #include <GLFW/glfw3.h>
+
 
 // 윈도우의 크기가 변경될때마다 호출되는 콜백함수
 void OnFramebufferSizeChange(GLFWwindow* window, int width, int height) 
@@ -70,6 +74,9 @@ int main(int argc, const char **argv[])
         glfwTerminate();
         return -1;
     }
+
+    /// GLLoader 호출 이후에 OpenGL 함수를 쓸 수 있다
+
     auto glVersion = glGetString(GL_VERSION);
     // SPDLOG_INFO("OpenGL context version: {}", glVersion);
     SPDLOG_INFO("OpenGL context version: {}", reinterpret_cast<const char*>(glVersion));    // glVersion의 타입은 const GLubyte* → 즉, const unsigned char*
@@ -78,6 +85,12 @@ int main(int argc, const char **argv[])
     // unsigned char*이나 GLubyte*는 **"non-void pointer"**로 간주돼서 static_assert로 막음.    
     // 즉, spdlog가 포인터 타입을 문자열로 인식 못 하고, 포인터 주소를 출력하려다 금지 먹은 거야.
     // 예전에는 void*도 가능했지만, 이제는 안된다
+
+    auto vertexShader = Shader::CreateFromFile("./shader/simple.vs", GL_VERTEX_SHADER);
+    auto fragmentShader = Shader::CreateFromFile("./shader/simple.fs", GL_FRAGMENT_SHADER);
+    SPDLOG_INFO("vertex shader id: {}", vertexShader->Get());   // vertexShader의 ID는 1
+    SPDLOG_INFO("fragment shader id: {}", fragmentShader->Get());   // fragmentShader의 ID는 2
+
 
 
     OnFramebufferSizeChange(window, WINDOW_WIDTH, WINDOW_HEIGHT);   // 처음 생성될 때는 콜백이 호출하지 않으므로, 직접 명시적으로 호출한다
@@ -104,4 +117,4 @@ int main(int argc, const char **argv[])
     glfwTerminate();    
 
     return 0;
-}
+   }
