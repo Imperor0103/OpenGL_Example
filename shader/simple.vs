@@ -6,6 +6,7 @@ layout (location = 0) in vec3 aPos;
 // 모든 vertex마다 main 함수가 호출된다.
 void main() 
 {
-    gl_Position = vec4(0.0, 0.0, 0.0, 1.0);
+    //gl_Position = vec4(0.0, 0.0, 0.0, 1.0);
+    gl_Position = vec4(0.5, 0.5, 0.0, 1.0); // 정점의 위치 변경    
 }
 

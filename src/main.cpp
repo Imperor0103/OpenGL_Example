@@ -1,6 +1,4 @@
-#include "common.h"
-#include "shader.h" 
-#include "program.h"
+#include "context.h"
 
 #include <spdlog/spdlog.h>
 #include <glad/glad.h> // glad 라이브러리 헤더파일
@@ -87,14 +85,14 @@ int main(int argc, const char **argv[])
     // 즉, spdlog가 포인터 타입을 문자열로 인식 못 하고, 포인터 주소를 출력하려다 금지 먹은 거야.
     // 예전에는 void*도 가능했지만, 이제는 안된다
 
-    ShaderPtr vertShader = Shader::CreateFromFile("./shader/simple.vs", GL_VERTEX_SHADER);
-    ShaderPtr fragShader = Shader::CreateFromFile("./shader/simple.fs", GL_FRAGMENT_SHADER);
-    SPDLOG_INFO("vertex shader id: {}", vertShader->Get());   // vertexShader의 ID는 1
-    SPDLOG_INFO("fragment shader id: {}", fragShader->Get());   // fragmentShader의 ID는 2
-
-    auto program = Program::Create({fragShader, vertShader});
-    SPDLOG_INFO("program id: {}", program->Get());
-
+    // context 생성, 초기화
+    auto context = Context::Create();
+    if (!context) 
+    {
+        SPDLOG_ERROR("failed to create context");
+        glfwTerminate();
+        return -1;
+    }
 
     OnFramebufferSizeChange(window, WINDOW_WIDTH, WINDOW_HEIGHT);   // 처음 생성될 때는 콜백이 호출하지 않으므로, 직접 명시적으로 호출한다
     glfwSetFramebufferSizeCallback(window, OnFramebufferSizeChange); // 윈도우의 크기가 변경될때마다 호출되는 콜백함수 등록
@@ -110,12 +108,13 @@ int main(int argc, const char **argv[])
         // 60Hz로 이벤트를 처리(1/60초마다 이벤트를 1번 처리)
         // 이벤트 내용: 윈도우 크기가 변경되거나, 마우스 입력, 키보드 입력을 받는 경우 등
         glfwPollEvents(); 
-
-        // 윈도우를 파란색으로 변경
-        glClearColor(0.1f, 0.2f, 0.3f, 0.0f);   // glClearColor()는 윈도우의 배경색을 설정하는 함수, RGBA값을 0.0f ~ 1.0f로 설정
-        glClear(GL_COLOR_BUFFER_BIT);   // glClear()는 윈도우를 glClearColor에서 정한 색깔로 지우는 함수, GL_COLOR_BUFFER_BIT는 색상 버퍼를 지우는 플래그
+        context->Render();  // context의 Render() 함수 호출, 색상 버퍼를 초기화하고 화면을 업데이트한다        
         glfwSwapBuffers(window); // glfwSwapBuffers()는 윈도우의 버퍼를 교체하는 함수, 즉 화면을 업데이트하는 함수
     }
+    // 두가지 방법 모두 가능하므로 하나 선택
+    context.reset();    // 1.context를 해제, ContextUPtr이므로 자동으로 소멸자 호출
+    // context = nullptr; // 2.context를 nullptr로 설정, ContextUPtr이므로 자동으로 소멸자 호출
+
     // glfwTerminate()는 glfw 라이브러리를 종료하는 함수, 윈도우가 닫히면 호출
     glfwTerminate();    
 
