@@ -1,5 +1,6 @@
 #include "common.h"
 #include "shader.h" 
+#include "program.h"
 
 #include <spdlog/spdlog.h>
 #include <glad/glad.h> // glad 라이브러리 헤더파일
@@ -86,11 +87,13 @@ int main(int argc, const char **argv[])
     // 즉, spdlog가 포인터 타입을 문자열로 인식 못 하고, 포인터 주소를 출력하려다 금지 먹은 거야.
     // 예전에는 void*도 가능했지만, 이제는 안된다
 
-    auto vertexShader = Shader::CreateFromFile("./shader/simple.vs", GL_VERTEX_SHADER);
-    auto fragmentShader = Shader::CreateFromFile("./shader/simple.fs", GL_FRAGMENT_SHADER);
-    SPDLOG_INFO("vertex shader id: {}", vertexShader->Get());   // vertexShader의 ID는 1
-    SPDLOG_INFO("fragment shader id: {}", fragmentShader->Get());   // fragmentShader의 ID는 2
+    ShaderPtr vertShader = Shader::CreateFromFile("./shader/simple.vs", GL_VERTEX_SHADER);
+    ShaderPtr fragShader = Shader::CreateFromFile("./shader/simple.fs", GL_FRAGMENT_SHADER);
+    SPDLOG_INFO("vertex shader id: {}", vertShader->Get());   // vertexShader의 ID는 1
+    SPDLOG_INFO("fragment shader id: {}", fragShader->Get());   // fragmentShader의 ID는 2
 
+    auto program = Program::Create({fragShader, vertShader});
+    SPDLOG_INFO("program id: {}", program->Get());
 
 
     OnFramebufferSizeChange(window, WINDOW_WIDTH, WINDOW_HEIGHT);   // 처음 생성될 때는 콜백이 호출하지 않으므로, 직접 명시적으로 호출한다

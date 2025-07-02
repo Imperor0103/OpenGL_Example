@@ -16,13 +16,16 @@ project(${PROJECT_NAME})
 # MSVC일 경우 소스 파일을 UTF-8로 컴파일
 add_compile_options("$<$<CXX_COMPILER_ID:MSVC>:/utf-8>")
 
+# 실행할 파일들을 컴파일한다
 add_executable(${PROJECT_NAME} 
     src/main.cpp
     src/common.cpp src/common.h
     src/shader.cpp src/shader.h
+    src/program.cpp src/program.h
     )
 # src/main.cpp을 컴파일해서 PROJECT_NAME이름의 실행파일을 만들어라
 # src/common.cpp, src/common.h, src/shader.cpp, src/shader.h 파일도 함께 컴파일한다
+# 그 외에 추가하는 파일도 컴파일한다
 
 include(Dependency.cmake)
 
