@@ -19,6 +19,9 @@ private:
     Context() {}
     bool Init();
     ProgramUPtr m_program;  // 만들 프로그램 저장
+
+    uint32_t m_vertexArrayObject; // 정점 배열 객체(Vertex Array Object, VAO)
+    uint32_t m_vertexBuffer;    // 정점 데이터를 저장할 버퍼
 };
 
 
