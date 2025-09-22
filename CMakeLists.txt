@@ -24,6 +24,7 @@ add_executable(${PROJECT_NAME}
     src/program.cpp src/program.h
     src/context.cpp src/context.h
     src/buffer.cpp src/buffer.h
+    src/vertex_layout.cpp src/vertex_layout.h
     )
 # src/main.cpp을 컴파일해서 PROJECT_NAME이름의 실행파일을 만들어라
 # src/common.cpp, src/common.h, src/shader.cpp, src/shader.h 파일도 함께 컴파일한다

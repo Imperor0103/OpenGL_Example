@@ -27,15 +27,17 @@ bool Context::Init()
     };
 
     // VAO는 Vertex Buffer를 만들기 전에 생성한다
-    glGenVertexArrays(1, &m_vertexArrayObject); // glGenVertexArrays()는 OpenGL에서 정점 배열 객체(Vertex Array Object, VAO)를 생성하는 함수
-    glBindVertexArray(m_vertexArrayObject); // glBindVertexArray()는 VAO를 바인딩하여 m_vertexArrayObject를 사용할 수 있도록 설정하는 함수
+    m_vertexLayout = VertexLayout::Create();
+    // glGenVertexArrays(1, &m_vertexArrayObject); // glGenVertexArrays()는 OpenGL에서 정점 배열 객체(Vertex Array Object, VAO)를 생성하는 함수
+    // glBindVertexArray(m_vertexArrayObject); // glBindVertexArray()는 VAO를 바인딩하여 m_vertexArrayObject를 사용할 수 있도록 설정하는 함수
 
     // vertex buffer 설정
     m_vertexBuffer = Buffer::CreateWithData(GL_ARRAY_BUFFER, GL_STATIC_DRAW, vertices, sizeof(vertices));   // sizeof(vertices) = sizeof(float) * 12
-        
+    
     // Vertex Buffer의 속성을 설정
-    glEnableVertexAttribArray(0);   // glEnableVertexAttribArray()는 정점 속성 배열을 활성화하는 함수, 0은 속성 인덱스
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 3, 0);  // 0번 attribute에 3개의 float를 사용, GL_FALSE는 정규화(normalize)하지 않음, sizeof(float) * 3만큼 건너뛰어야 다음 stride, 0은 버퍼의 시작 위치
+    m_vertexLayout->SetAttrib(0, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 3, 0); // 0번 attribute에 3개의 float를 사용, GL_FALSE는 정규화(normalize)하지 않음, sizeof(float) * 3만큼 건너뛰어야 다음 stride, 0은 버퍼의 시작 위치
+    // glEnableVertexAttribArray(0);   // glEnableVertexAttribArray()는 정점 속성 배열을 활성화하는 함수, 0은 속성 인덱스
+    // glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 3, 0);  // 0번 attribute에 3개의 float를 사용, GL_FALSE는 정규화(normalize)하지 않음, sizeof(float) * 3만큼 건너뛰어야 다음 stride, 0은 버퍼의 시작 위치
     
     // index buffer 설정
     m_indexBuffer = Buffer::CreateWithData(GL_ELEMENT_ARRAY_BUFFER, GL_STATIC_DRAW, indices, sizeof(indices));  // sizeof(indices) = sizeof(uint32_t) * 6
