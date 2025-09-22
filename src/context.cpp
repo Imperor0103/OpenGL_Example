@@ -13,9 +13,14 @@ bool Context::Init()
 {
     // 정점 데이터
     float vertices[] = {
-        -0.5f, -0.5f, 0.0f,
-        0.5f, -0.5f, 0.0f,
-        0.0f, 0.5f, 0.0f,
+        // first triangle
+        0.5f, 0.5f, 0.0f, // top right
+        0.5f, -0.5f, 0.0f, // bottom right
+        -0.5f, 0.5f, 0.0f, // top left
+        // second triangle
+        0.5f, -0.5f, 0.0f, // bottom right
+        -0.5f, -0.5f, 0.0f, // bottom left
+        -0.5f, 0.5f, 0.0f // top left
     };
 
     // VAO는 Vertex Buffer를 만들기 전에 생성한다
@@ -24,7 +29,7 @@ bool Context::Init()
 
     glGenBuffers(1, &m_vertexBuffer);   // glGenBuffers()는 OpenGL에서 버퍼 객체를 생성하는 함수
     glBindBuffer(GL_ARRAY_BUFFER, m_vertexBuffer);  // glBindBuffer()는 버퍼를 바인딩하여 m_vertexBuffer를 사용할 수 있도록 설정하는 함수
-    glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 9, vertices, GL_STATIC_DRAW); 
+    glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 18, vertices, GL_STATIC_DRAW); 
     // glBufferData()는 버퍼에 데이터를 복사하는 함수
     // vertices에 있는 정점 데이터를 GL_ARRAY_BUFFER에 복사, sizeof(float) * 9는 버퍼의 크기, GL_STATIC_DRAW는 버퍼의 사용 용도를 나타냄
 
@@ -59,5 +64,6 @@ void Context::Render()
     // glUseProgram()은 OpenGL 프로그램을 사용하는 함수, m_program->Get()으로 OpenGL program object ID를 가져와서 사용
     glUseProgram(m_program->Get());
     // glDrawArrays(GL_POINTS, 0, 1); // 점 하나 출력
-    glDrawArrays(GL_TRIANGLES, 0, 3); // 삼각형 출력
+    // glDrawArrays(GL_TRIANGLES, 0, 3); // 삼각형 출력
+    glDrawArrays(GL_TRIANGLES, 0, 6); // 삼각형 2개 출력
 }
