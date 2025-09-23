@@ -1,10 +1,9 @@
-// Simple fragment shader that outputs a solid red color
-// This shader is written in GLSL version 330 core
 #version 330 core
-out vec4 fragColor;
+
+in vec4 vertexColor; // vs로부터 입력된 변수 (같은 변수명, 같은 타입)
+out vec4 FragColor; // 최종 출력 색상
 
 void main() 
 {
-    //fragColor = vec4(1.0, 0.0, 0.0, 1.0);
-    fragColor = vec4(1.0, 1.0, 0.0, 1.0); // Change color to yellow
+    FragColor = vertexColor;
 }
